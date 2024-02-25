@@ -89,6 +89,24 @@ public class RobotOperationsTest {
         });
     }
 
+    @Test
+    public void shouldReturnEmptyStonesExceptionWhenStonesAreNegativeNumber(){
+        Mockito.when(robotOperations.daysRequiredToCollectStones(-5)).thenThrow(new EmptyStonesException("Given stones are empty"));
+
+        Assertions.assertThrows(EmptyStonesException.class,() -> {
+            robotOperations.daysRequiredToCollectStones(-5);
+        });
+    }
+
+    @Test
+    public void shouldReturnEmptyDaysExceptionWhenDaysAreNegativeNumber(){
+        Mockito.when(robotOperations.excavateStonesForDays(-5)).thenThrow(new EmptyDaysException("Given days are empty"));
+
+        Assertions.assertThrows(EmptyDaysException.class,() -> {
+            robotOperations.excavateStonesForDays(-5);
+        });
+    }
+
 
     private List<RobotAction> generateActionsLib() {
 

@@ -88,6 +88,24 @@ public class RobotRestControllerTest {
                         .andExpect(jsonPath("robotActions").value(actualRobotActionString));
     }
 
+    @Test
+    public void shouldReturnBadRequestByGivenEmptyDays() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/robot/operation/excavation")
+                        .param("numberOfDays", "0")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void shouldReturnBadRequestBadGivenEmptyStones() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/v1/robot/operation/approximation")
+                .param("numberOfStones", "0")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
     private List<String> convertEnumActionToString() {
 
         return this.actionList.stream()

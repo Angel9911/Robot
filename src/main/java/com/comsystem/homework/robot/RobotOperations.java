@@ -30,14 +30,14 @@ public class RobotOperations {
      */
     public RobotPlan excavateStonesForDays(int days) {
 
-        List<RobotAction> robotActions = new ArrayList<>();
+        List<RobotAction> robotActions;
 
         RobotPlan robot;
         int stones = 0;
         int clones = 0;
         int currentDayStones;
-        // TODO
-        if(days != 0){
+
+        if(days > 0){
 
             if(days==1){
 
@@ -98,7 +98,7 @@ public class RobotOperations {
 
         int clones = 0;
 
-        if(numberOfStones != 0) {
+        if(numberOfStones > 0) {
 
             while (stonesQuantity > 0) {
                 days++;
