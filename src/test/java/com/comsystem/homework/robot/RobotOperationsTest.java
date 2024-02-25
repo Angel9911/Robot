@@ -1,11 +1,15 @@
 package com.comsystem.homework.robot;
 
+import com.comsystem.homework.exceptions.EmptyDaysException;
+import com.comsystem.homework.exceptions.EmptyStonesException;
 import com.comsystem.homework.model.RobotAction;
 import com.comsystem.homework.model.RobotPlan;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -15,18 +19,22 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class RobotOperationsTest {
 
+    @Mock
     private RobotOperations robotOperations;
     private List<RobotAction> actionList;
     private RobotPlan robotPlan;
 
     @BeforeEach
-    void setup(RobotOperations robotOperations) {
-        this.robotOperations = robotOperations;
+    void setup() {
 
         this.actionList = generateActionsLib();
         this.robotPlan = new RobotPlan(6,9,this.actionList);
     }
 
+    @AfterEach
+    void clearAll(){
+        this.actionList.clear();
+    }
 
     @Test
     public void shouldReturnRobotPlanByGivenDaysSuccessfully(){
@@ -65,12 +73,20 @@ public class RobotOperationsTest {
 
     @Test
     public void shouldReturnEmptyDaysExceptionWhenDaysIsNull(){
+        Mockito.when(robotOperations.excavateStonesForDays(0)).thenThrow(new EmptyDaysException("Given days are empty"));
 
+        Assertions.assertThrows(EmptyDaysException.class,() -> {
+            robotOperations.excavateStonesForDays(0);
+        });
     }
 
     @Test
     public void shouldReturnEmptyStonesExceptionWhenStonesIsNull(){
+        Mockito.when(robotOperations.daysRequiredToCollectStones(0)).thenThrow(new EmptyStonesException("Given stones are empty"));
 
+        Assertions.assertThrows(EmptyStonesException.class,() -> {
+            robotOperations.daysRequiredToCollectStones(0);
+        });
     }
 
 

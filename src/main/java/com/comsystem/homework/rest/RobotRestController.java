@@ -1,6 +1,8 @@
 package com.comsystem.homework.rest;
 
 import com.comsystem.homework.model.RobotPlan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import com.comsystem.homework.robot.RobotOperations;
 @RestController()
 @RequestMapping("/api/v1/robot/operation")
 public final class RobotRestController {
+    private static final Logger logger = LoggerFactory.getLogger(RobotRestController.class);
 
     private final RobotOperations robotOperations;
 
@@ -26,11 +29,14 @@ public final class RobotRestController {
      */
     @PostMapping("/excavation")
     public ResponseEntity<RobotPlan> excavateStones(@RequestParam Integer numberOfDays) {
-        // TODO
-        // throw new ErrorResponseException(HttpStatus.I_AM_A_TEAPOT);
 
-        RobotPlan robotPlan = this.robotOperations.excavateStonesForDays(numberOfDays);
-        return new ResponseEntity<>(robotPlan,HttpStatus.OK);
+        try {
+            RobotPlan robotPlan = this.robotOperations.excavateStonesForDays(numberOfDays);
+            return new ResponseEntity<>(robotPlan,HttpStatus.OK);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -38,11 +44,14 @@ public final class RobotRestController {
      */
     @PostMapping("/approximation")
     public ResponseEntity<RobotPlan> approximateDays(@RequestParam Integer numberOfStones) {
-        // TODO
-        // throw new ErrorResponseException(HttpStatus.I_AM_A_TEAPOT);
 
-        RobotPlan rootPlan = this.robotOperations.daysRequiredToCollectStones(numberOfStones);
-        return new ResponseEntity<>(rootPlan,HttpStatus.OK);
+        try {
+            RobotPlan robotPlan = this.robotOperations.daysRequiredToCollectStones(numberOfStones);
+            return new ResponseEntity<>(robotPlan,HttpStatus.OK);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 

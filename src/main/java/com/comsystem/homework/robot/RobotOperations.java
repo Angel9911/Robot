@@ -5,6 +5,8 @@ import com.comsystem.homework.exceptions.EmptyDaysException;
 import com.comsystem.homework.exceptions.EmptyStonesException;
 import com.comsystem.homework.model.RobotAction;
 import com.comsystem.homework.model.RobotPlan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -70,6 +72,7 @@ public class RobotOperations {
             return robot;
 
         }else {
+
             throw new EmptyDaysException("Given days are empty");
         }
     }
