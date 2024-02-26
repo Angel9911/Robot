@@ -33,48 +33,21 @@ public class RobotOperations {
         List<RobotAction> robotActions;
 
         RobotPlan robot;
-        int stones = 0;
-        int clones = 0;
-        int currentDayStones;
+        int stones;
 
         if(days > 0){
 
-            if(days==1){
+            stones = getStones(days);
 
-                stones = 1;
-            }else{
-
-                for(int i=1;i<=days;i++){
-
-                    if(i % 2 ==0){
-
-                        if(i > 2){
-
-                            stones+=clones;
-                        }
-
-                        clones++;
-                    } else{
-
-                        /*
-                         * The first iteration, the clones will be 0 and only one stone will be mined. Every
-                         * next time the stones from clones will be added.
-                         */
-                        currentDayStones = 1 + clones;
-                        stones += currentDayStones;
-                    }
-                }
-            }
             robotActions = getRobotActions(days);
 
             robot = new RobotPlan(days,stones,robotActions);
 
             return robot;
 
-        }else {
-
-            throw new EmptyDaysException("Given days are empty");
         }
+
+        throw new EmptyDaysException("Given days are empty");
     }
 
     /**
@@ -92,39 +65,86 @@ public class RobotOperations {
 
         RobotPlan robot;
 
-        int days = 0;
-
-        int stonesQuantity = numberOfStones;
-
-        int clones = 0;
+        int days;
 
         if(numberOfStones > 0) {
 
-            while (stonesQuantity > 0) {
-                days++;
-
-                if (days % 2 == 0) {
-
-                    clones++;
-
-                    if (days > 2) {
-
-                        stonesQuantity = stonesQuantity - clones;
-                    }
-                } else {
-
-                    stonesQuantity = stonesQuantity - clones - 1;
-                }
-            }
+            days = getDays(numberOfStones);
 
             robotActions = getRobotActions(days);
 
             robot = new RobotPlan(days, numberOfStones, robotActions);
+
             return robot;
 
-        }else{
-            throw new EmptyStonesException("Given stones are empty");
         }
+
+        throw new EmptyStonesException("Given stones are empty");
+    }
+
+    private int getStones(int days) {
+
+        if(days == 1){
+
+            return 1;
+        }
+
+        int currentDayStones;
+        int stones = 0;
+        int clones = 0;
+
+        for(int i = 1; i<= days; i++){
+
+            if(i % 2 ==0){
+
+                if(i > 2){
+
+                    stones+=clones;
+                }
+
+                 clones++;
+
+            } else{
+
+                /*
+                 * The first iteration, the clones will be 0 and only one stone will be mined. Every
+                 * next time the stones from clones will be added.
+                 */
+                currentDayStones = 1 + clones;
+                stones += currentDayStones;
+            }
+        }
+        return stones;
+    }
+
+    private int getDays(int numberOfStones) {
+
+        if(numberOfStones == 1){
+            return 1;
+        }
+
+        int days=0;
+        int clones=0;
+        int stonesQuantity = numberOfStones;
+
+        while (stonesQuantity > 0) {
+
+            days++;
+
+            if (days % 2 == 0) {
+
+                clones++;
+
+                if (days > 2) {
+
+                    stonesQuantity = stonesQuantity - clones;
+                }
+            } else {
+
+                stonesQuantity = stonesQuantity - clones - 1;
+            }
+        }
+        return days;
     }
 
     private List<RobotAction> getRobotActions(int days) {

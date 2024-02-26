@@ -28,14 +28,14 @@ public final class RobotRestController {
      * This method exposes the functionality of {@link RobotOperations#excavateStonesForDays(int)} via HTTP
      */
     @PostMapping("/excavation")
-    public ResponseEntity<RobotPlan> excavateStones(@RequestParam Integer numberOfDays) {
+    public ResponseEntity<?> excavateStones(@RequestParam Integer numberOfDays) {
 
         try {
             RobotPlan robotPlan = this.robotOperations.excavateStonesForDays(numberOfDays);
             return new ResponseEntity<>(robotPlan,HttpStatus.OK);
         }catch (Exception e){
             logger.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The days value you submitted is empty");
         }
     }
 
@@ -43,14 +43,14 @@ public final class RobotRestController {
      * This method exposes the functionality of {@link RobotOperations#daysRequiredToCollectStones(int)} via HTTP
      */
     @PostMapping("/approximation")
-    public ResponseEntity<RobotPlan> approximateDays(@RequestParam Integer numberOfStones) {
+    public ResponseEntity<?> approximateDays(@RequestParam Integer numberOfStones) {
 
         try {
             RobotPlan robotPlan = this.robotOperations.daysRequiredToCollectStones(numberOfStones);
             return new ResponseEntity<>(robotPlan,HttpStatus.OK);
         }catch (Exception e){
             logger.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The stones value you submitted is empty");
         }
     }
 
